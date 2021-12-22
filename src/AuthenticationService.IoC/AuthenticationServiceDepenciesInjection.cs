@@ -8,7 +8,8 @@ namespace AuthenticationService.IoC
     {
         public static void AddProjectDependencies(this IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IUserRepository, UserRepository>();            
         }
     }
 }
