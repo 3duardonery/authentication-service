@@ -8,14 +8,12 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="MongoDB.Driver" Version="2.14.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AuthenticationService.IoC\AuthenticationService.IoC.csproj" />
+    <ProjectReference Include="..\AuthenticationService.Services\AuthenticationService.Services.csproj" />
   </ItemGroup>
 
 

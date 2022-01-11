@@ -1,5 +1,6 @@
 ﻿using AuthenticationService.Application.Request;
 using AuthenticationService.Domain.Repository;
+using AuthenticationService.Domain.Services;
 using AuthenticationService.Shared.ViewModels;
 using MediatR;
 using OperationResult;
@@ -13,10 +14,12 @@ namespace AuthenticationService.Application.Handlers
         : IRequestHandler<AuthenticateUserRequest, Result<AuthenticatedUserViewModel>>
     {
         private readonly IUserRepository _userRepository;
+        private readonly ITokenGeneratorService _tokenGeneratorService;
 
-        public AuthenticateUserRequestHandler(IUserRepository userRepository)
+        public AuthenticateUserRequestHandler(IUserRepository userRepository, ITokenGeneratorService tokenGeneratorService)
         {
             _userRepository = userRepository;
+            _tokenGeneratorService = tokenGeneratorService;
         }
 
         public async Task<Result<AuthenticatedUserViewModel>> Handle(AuthenticateUserRequest request, CancellationToken cancellationToken)
@@ -26,7 +29,7 @@ namespace AuthenticationService.Application.Handlers
                 .ConfigureAwait(false);
 
             if (!isUserSearchSuccess || userSearched is null)
-                return Result.Error<AuthenticatedUserViewModel>(new Exception("Error on user search"));
+                return Result.Error<AuthenticatedUserViewModel>(new Exception("User/Password is incorrect"));
 
             if (!userSearched.Enabled)
                 return Result.Error<AuthenticatedUserViewModel>(new Exception("User disabled"));
@@ -34,7 +37,12 @@ namespace AuthenticationService.Application.Handlers
             if (!userSearched.HashedPassword.Equals(request.HashedPassword))
                 return Result.Error<AuthenticatedUserViewModel>(new Exception("Error user/password incorrect"));
 
-            return Result.Success(new AuthenticatedUserViewModel { Token = "123456", Username = "jose.c" });
+            var (isGeneratedToken, tokenResult, tokenException) = await _tokenGeneratorService.GenerateToken(userSearched).ConfigureAwait(false);
+
+            if (!isGeneratedToken)
+                return Result.Error<AuthenticatedUserViewModel>(tokenException);
+
+            return Result.Success(tokenResult);
         }
     }
 }

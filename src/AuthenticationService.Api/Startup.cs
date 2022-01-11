@@ -1,4 +1,7 @@
+using AuthenticationService.Domain.Services;
 using AuthenticationService.IoC;
+using AuthenticationService.Services.Token;
+using AuthenticationService.Shared.ValueObject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -12,9 +15,16 @@ namespace AuthenticationService.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            DatabaseSettings = new DatabaseSettings
+            {
+                ConnectionString = Configuration.GetSection("DatabaseSettings:ConnectionString").Value,
+                Database = Configuration.GetSection("DatabaseSettings:Database").Value
+            };
         }
 
         public IConfiguration Configuration { get; }
+
+        public DatabaseSettings DatabaseSettings { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -23,7 +33,11 @@ namespace AuthenticationService.Api
 
             services.AddProjectDependencies();
 
-            services.AddMediatRDependency();
+            services.AddMediatRDependency();            
+
+            services.AddDatabaseDependency(DatabaseSettings);
+
+            services.AddScoped<ITokenGeneratorService>(x => new TokenGeneratorService(Configuration.GetSection("TokenConfig:HashKey").Value));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
