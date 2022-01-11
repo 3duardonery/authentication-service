@@ -29,7 +29,7 @@ namespace AuthenticationService.Application.Handlers
                 .ConfigureAwait(false);
 
             if (!isUserSearchSuccess || userSearched is null)
-                return Result.Error<AuthenticatedUserViewModel>(userSearchExecption);
+                return Result.Error<AuthenticatedUserViewModel>(new Exception("User/Password is incorrect"));
 
             if (!userSearched.Enabled)
                 return Result.Error<AuthenticatedUserViewModel>(new Exception("User disabled"));

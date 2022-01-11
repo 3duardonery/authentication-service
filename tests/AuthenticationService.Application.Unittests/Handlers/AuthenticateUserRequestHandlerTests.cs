@@ -6,6 +6,7 @@ using AuthenticationService.Shared.ViewModels;
 using FluentAssertions;
 using Moq;
 using OperationResult;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -82,6 +83,67 @@ namespace AuthenticationService.Application.Handlers
 
             _userRepository.Setup(data => data.AuthenticateUser("jose.c"))
                 .Returns(Result.Success(validAndEnabledUser));
+
+            var result = await sut.Handle(request, new CancellationToken());
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Value.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task AuthenticateUser_WithInvalidUser_ShouldBeError()
+        {
+            // Arrange
+            var invalidUser = new User();
+            invalidUser.EnabledUser();
+            invalidUser.SetHashedPassword("1234567");
+            invalidUser.SetUserName("jose.c");
+
+            invalidUser = null;
+
+            var request = new AuthenticateUserRequest
+            {
+                HashedPassword = "123456",
+                Username = "jose.c"
+            };
+
+            // Action
+            var sut = new AuthenticateUserRequestHandler(_userRepository.Object, _tokenGeneratorService.Object);
+
+            _userRepository.Setup(data => data.AuthenticateUser("jose.c"))
+                .Returns(Result.Success(invalidUser));            
+
+            var result = await sut.Handle(request, new CancellationToken());
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Value.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task AuthenticateUser_WithErrorOnTokenGeneration_ShouldBeError()
+        {
+            // Arrange
+            var validAndEnabledUser = new User();
+            validAndEnabledUser.EnabledUser();
+            validAndEnabledUser.SetHashedPassword("1234567");
+            validAndEnabledUser.SetUserName("jose.c");
+
+            var request = new AuthenticateUserRequest
+            {
+                HashedPassword = "123456",
+                Username = "jose.c"
+            };
+
+            // Action
+            var sut = new AuthenticateUserRequestHandler(_userRepository.Object, _tokenGeneratorService.Object);
+
+            _userRepository.Setup(data => data.AuthenticateUser("jose.c"))
+                .Returns(Result.Success(validAndEnabledUser));
+
+            _tokenGeneratorService.Setup(token => token.GenerateToken(validAndEnabledUser))
+                .Returns(Result.Error<AuthenticatedUserViewModel>(new Exception("Error on token generation")));
 
             var result = await sut.Handle(request, new CancellationToken());
 

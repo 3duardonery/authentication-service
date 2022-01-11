@@ -10,10 +10,7 @@ namespace AuthenticationService.Api.Controllers
     public class AuthenticateController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public AuthenticateController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public AuthenticateController(IMediator mediator) => _mediator = mediator;
 
         public async Task<IActionResult> AuthenticateUser([FromBody] AuthenticateUserRequest authenticateUserRequest)
         {
