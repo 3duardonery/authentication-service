@@ -31,7 +31,7 @@ namespace AuthenticationService.Infrastructure.Repository
 
                 var complexFilter = Builders<User>.Filter.And(filters);
 
-                var response = await _users.FindAsync(_ => true).ConfigureAwait(false);
+                var response = await _users.FindAsync(complexFilter).ConfigureAwait(false);
 
                 var user = response.FirstOrDefault();
 

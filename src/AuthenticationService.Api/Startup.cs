@@ -1,4 +1,6 @@
+using AuthenticationService.Domain.Services;
 using AuthenticationService.IoC;
+using AuthenticationService.Services.Token;
 using AuthenticationService.Shared.ValueObject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +36,8 @@ namespace AuthenticationService.Api
             services.AddMediatRDependency();            
 
             services.AddDatabaseDependency(DatabaseSettings);
+
+            services.AddScoped<ITokenGeneratorService>(x => new TokenGeneratorService(Configuration.GetSection("TokenConfig:HashKey").Value));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

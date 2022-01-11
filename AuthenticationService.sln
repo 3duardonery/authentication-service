@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService.Appli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService.Domain.UnitTests", "tests\AuthenticationService.Domain.UnitTests\AuthenticationService.Domain.UnitTests.csproj", "{3B369967-0D1D-4ABA-93DB-246241AA0811}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService.Shared", "src\AuthenticationService.Shared\AuthenticationService.Shared.csproj", "{148B3C9C-9E45-494A-A306-5E74BE16F17A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService.Shared", "src\AuthenticationService.Shared\AuthenticationService.Shared.csproj", "{148B3C9C-9E45-494A-A306-5E74BE16F17A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService.Services", "src\AuthenticationService.Services\AuthenticationService.Services.csproj", "{11363F70-C2F2-4FBB-8920-E76CC202A523}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{148B3C9C-9E45-494A-A306-5E74BE16F17A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{148B3C9C-9E45-494A-A306-5E74BE16F17A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{148B3C9C-9E45-494A-A306-5E74BE16F17A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11363F70-C2F2-4FBB-8920-E76CC202A523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11363F70-C2F2-4FBB-8920-E76CC202A523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11363F70-C2F2-4FBB-8920-E76CC202A523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11363F70-C2F2-4FBB-8920-E76CC202A523}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +88,7 @@ Global
 		{4ECB9B19-5C24-4BF5-83AA-AB1FBE0D7775} = {BC53E6D4-A5FC-4DA9-A819-B93595538B45}
 		{3B369967-0D1D-4ABA-93DB-246241AA0811} = {BC53E6D4-A5FC-4DA9-A819-B93595538B45}
 		{148B3C9C-9E45-494A-A306-5E74BE16F17A} = {089670CD-2BEA-4152-AEB4-A1FED4C45AB6}
+		{11363F70-C2F2-4FBB-8920-E76CC202A523} = {089670CD-2BEA-4152-AEB4-A1FED4C45AB6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {99A315A1-895B-4944-BCA5-18E43A0FB1A0}

@@ -1,6 +1,7 @@
 ﻿using AuthenticationService.Application.Request;
 using AuthenticationService.Domain.Models;
 using AuthenticationService.Domain.Repository;
+using AuthenticationService.Domain.Services;
 using AuthenticationService.Shared.ViewModels;
 using FluentAssertions;
 using Moq;
@@ -14,11 +15,13 @@ namespace AuthenticationService.Application.Handlers
     public sealed class AuthenticateUserRequestHandlerTests
     {
         private readonly Mock<IUserRepository> _userRepository;
+        private readonly Mock<ITokenGeneratorService> _tokenGeneratorService;
         private readonly AuthenticateUserRequestHandler _sut;
         public AuthenticateUserRequestHandlerTests()
         {
             _userRepository = new Mock<IUserRepository>();
-            _sut = new AuthenticateUserRequestHandler(_userRepository.Object);
+            _tokenGeneratorService = new Mock<ITokenGeneratorService>();
+            _sut = new AuthenticateUserRequestHandler(_userRepository.Object, _tokenGeneratorService.Object);
         }
 
         [Fact]
@@ -43,10 +46,13 @@ namespace AuthenticationService.Application.Handlers
             };
 
             // Action
-            var sut = new AuthenticateUserRequestHandler(_userRepository.Object);
+            var sut = new AuthenticateUserRequestHandler(_userRepository.Object, _tokenGeneratorService.Object);
 
             _userRepository.Setup(data => data.AuthenticateUser("jose.c"))
                 .Returns(Result.Success(validAndEnabledUser));
+
+            _tokenGeneratorService.Setup(token => token.GenerateToken(validAndEnabledUser))
+                .Returns(Result.Success(response));
 
             var result = await sut.Handle(request, new CancellationToken());
 
@@ -72,7 +78,7 @@ namespace AuthenticationService.Application.Handlers
             };
 
             // Action
-            var sut = new AuthenticateUserRequestHandler(_userRepository.Object);
+            var sut = new AuthenticateUserRequestHandler(_userRepository.Object, _tokenGeneratorService.Object);
 
             _userRepository.Setup(data => data.AuthenticateUser("jose.c"))
                 .Returns(Result.Success(validAndEnabledUser));
