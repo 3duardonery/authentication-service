@@ -18,7 +18,7 @@ jobs:
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       with:
-        projectBaseDir: $GITHUB_WORKSPACE
+        projectBaseDir: /src
         args: >
           -Dsonar.organization=authentication-service
           -Dsonar.projectKey=${{ secrets.PROJECT_KEY }}
