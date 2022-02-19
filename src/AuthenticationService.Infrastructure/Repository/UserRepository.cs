@@ -15,7 +15,7 @@ namespace AuthenticationService.Infrastructure.Repository
 
         public UserRepository(IMongoClient mongoClient)
         {
-            var database = mongoClient.GetDatabase("auth_api_dev");
+            var database = mongoClient.GetDatabase("auth_api");
             _users = database.GetCollection<User>("users");
             var conventionPack = new ConventionPack { new CamelCaseElementNameConvention() };
             ConventionRegistry.Register("camelCase", conventionPack, t => true);

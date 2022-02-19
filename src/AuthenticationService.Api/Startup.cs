@@ -17,8 +17,8 @@ namespace AuthenticationService.Api
             Configuration = configuration;
             DatabaseSettings = new DatabaseSettings
             {
-                ConnectionString = Configuration.GetSection("DatabaseSettings:ConnectionString").Value,
-                Database = Configuration.GetSection("DatabaseSettings:Database").Value
+                ConnectionString = Configuration.GetSection("ConnectionString").Value,
+                Database = Configuration.GetSection("Database").Value
             };
         }
 
@@ -37,7 +37,7 @@ namespace AuthenticationService.Api
 
             services.AddDatabaseDependency(DatabaseSettings);
 
-            services.AddScoped<ITokenGeneratorService>(x => new TokenGeneratorService(Configuration.GetSection("TokenConfig:HashKey").Value));
+            services.AddScoped<ITokenGeneratorService>(x => new TokenGeneratorService(Configuration.GetSection("HashKey").Value));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
